@@ -5,22 +5,26 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.stream.Collectors;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-public class TestDrawingTool extends JFrame implements ActionListener, ItemListener {
+public class DrawingTool extends JFrame implements ActionListener, ItemListener {
 	private static final int LABEL_H_MARGIN = 20;
 	private static final int LABEL_V_MARGIN = 5;
 
 	private JButton bambooOn, bambooOff;
 	private JLabel bambooLabel, bambooNumberLabel;
 	private DrawingArea area;
-	private JRadioButton rbNone, rbChinese, rbGerman, rbHandgun;
+	private ArrayList<JRadioButton> radioButtons;
 	private JCheckBox cbStraw;
 
 	private int bambooNumber = 0;
 
-	public TestDrawingTool(String title) {
+	public DrawingTool(String title) {
 		super(title);
 		Dimension screenSize = getToolkit().getScreenSize();
 		setBounds(0, 0, screenSize.width, screenSize.height);
@@ -30,6 +34,7 @@ public class TestDrawingTool extends JFrame implements ActionListener, ItemListe
 		JPanel verticalPanel = new JPanel();
 		verticalPanel.setLayout(new GridLayout(4, 1));
 		verticalPanel.add(bambooPanel());
+		radioButtons = new ArrayList<>();
 		verticalPanel.add(customizationPanel());
 
 		sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
@@ -43,8 +48,16 @@ public class TestDrawingTool extends JFrame implements ActionListener, ItemListe
 		setVisible(true);
 	}
 
+	public DrawingArea getDrawingArea() { // used for testing
+		return area;
+	}
+
+	public ArrayList<JRadioButton> getRadioButtons() {
+		return radioButtons;
+	}
+
 	public static void main(String[] args) {
-		new TestDrawingTool("Panda");
+		new DrawingTool("Panda");
 	}
 
 	@Override
@@ -56,16 +69,16 @@ public class TestDrawingTool extends JFrame implements ActionListener, ItemListe
 		} else if (e.getSource() == bambooOff) {
 			cleanup();
 			area.getScene().deleteBambooForest();
-		} else if (e.getSource() == rbChinese) {
+		} else if (e.getSource() == radioButtons.get(1)) {
 			cleanup();
 			area.getScene().addAccessory(Panda.AccessoryType.CHINESE_FLAG);
-		} else if (e.getSource() == rbGerman) {
+		} else if (e.getSource() == radioButtons.get(2)) {
 			cleanup();
 			area.getScene().addAccessory(Panda.AccessoryType.GERMAN_FLAG);
-		} else if (e.getSource() == rbHandgun) {
+		} else if (e.getSource() == radioButtons.get(3)) {
 			cleanup();
 			area.getScene().addAccessory(Panda.AccessoryType.HANDGUN);
-		} else if (e.getSource() == rbNone) {
+		} else if (e.getSource() == radioButtons.get(0)) {
 			cleanup();
 			area.getScene().addAccessory(Panda.AccessoryType.NO_ACCESSORY);
 		}
@@ -91,27 +104,21 @@ public class TestDrawingTool extends JFrame implements ActionListener, ItemListe
 		JPanel customPanel = new JPanel();
 		customPanel.setLayout(new BoxLayout(customPanel, BoxLayout.Y_AXIS));
 
-		rbNone = new JRadioButton("None");
-		rbNone.addActionListener(this);
-		rbChinese = new JRadioButton("Chinese flag");
-		rbChinese.addActionListener(this);
-		rbGerman = new JRadioButton("German flag");
-		rbGerman.addActionListener(this);
-		rbHandgun = new JRadioButton("Handgun");
-		rbHandgun.addActionListener(this);
+		radioButtons.add(new JRadioButton("None"));
+		radioButtons.get(0).addActionListener(this);
+		radioButtons.add(new JRadioButton("Chinese flag"));
+		radioButtons.get(1).addActionListener(this);
+		radioButtons.add(new JRadioButton("German flag"));
+		radioButtons.get(2).addActionListener(this);
+		radioButtons.add(new JRadioButton("Handgun"));
+		radioButtons.get(3).addActionListener(this);
 		cbStraw = new JCheckBox("Stray Hat");
 		cbStraw.addItemListener(this);
 
 		ButtonGroup buttonGroup = new ButtonGroup();
-		buttonGroup.add(rbNone);
-		buttonGroup.add(rbChinese);
-		buttonGroup.add(rbGerman);
-		buttonGroup.add(rbHandgun);
+		radioButtons.forEach(buttonGroup::add);
 
-		customPanel.add(rbNone);
-		customPanel.add(rbChinese);
-		customPanel.add(rbGerman);
-		customPanel.add(rbHandgun);
+		radioButtons.forEach(customPanel::add);
 		customPanel.add(cbStraw);
 
 		return customPanel;

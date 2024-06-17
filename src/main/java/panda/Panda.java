@@ -40,8 +40,16 @@ public class Panda implements LocatedRectangle {
 		this.accessoryType = accessoryType;
 	}
 
+	public AccessoryType getAccessoryType() {
+		return accessoryType;
+	}
+
 	public void setHatType(HatType hatType) {
 		this.hatType = hatType;
+	}
+
+	public HatType getHatType() {
+		return hatType;
 	}
 
 	@Override

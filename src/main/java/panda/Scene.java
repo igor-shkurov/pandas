@@ -17,11 +17,15 @@ public class Scene {
 	
 	public Scene(Dimension screenSize) {
 		bambooNumber = 0;
-		pandaNumber = 17;
+		pandaNumber = screenSize.width / PANDA_SIZE;
 		pandas = new ArrayList<>();
 		bamboos = new ArrayList<>();
 		this.screenSize = screenSize;
 		createPandas();
+	}
+
+	public ArrayList<Panda> getPandas() { // used for testing
+		return pandas;
 	}
 
 	public void setBambooNumber(int bambooNumber) {
