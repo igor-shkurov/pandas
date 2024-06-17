@@ -19,3 +19,12 @@ Since most of the program components perform graphical rendering, they are not t
 ![Alt text](/Coverage.png)
 ___
 ## 6. Launching the project
+To compile, test & create a .jar executable type in the following command:
+```
+mvn clean install
+```
+To launch the application:
+```
+java -jar target/panda-1.0-SNAPSHOT.jar
+```
+___
