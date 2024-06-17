@@ -18,7 +18,7 @@ public class Mouth extends BodyPart {
 		
 		Graphics2D g = (Graphics2D) Drawing.pen();
         Stroke oldStroke = g.getStroke();
-        g.setStroke(new BasicStroke(width / 40));
+        g.setStroke(new BasicStroke((float) width / 40));
 
 		g.drawArc(x, y, width, height, 0, -135);
 		g.drawArc(x + width, y, width, height, 180, 135);

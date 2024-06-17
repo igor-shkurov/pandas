@@ -26,6 +26,6 @@ mvn clean install
 ```
 To launch the application:
 ```
-java -jar target/panda-1.0-SNAPSHOT.jar
+java -jar target/panda-1.0.jar
 ```
 ___

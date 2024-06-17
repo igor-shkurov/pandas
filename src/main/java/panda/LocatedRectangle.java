@@ -3,16 +3,16 @@ package panda;
 import java.awt.Point;
 
 public interface LocatedRectangle {
-	public Point address();
-	public int width();
-	public int height();
-	public void draw();
+	Point address();
+	int width();
+	int height();
+	void draw();
 
-	public default boolean intersects(LocatedRectangle other) {
+	default boolean intersects(LocatedRectangle other) {
 		return !doesNotIntersect(other, 0);
 	}	
 	
-	public default boolean intersects(LocatedRectangle other, int margin) {
+	default boolean intersects(LocatedRectangle other, int margin) {
 		return !doesNotIntersect(other, margin);
 	}
 	
@@ -21,11 +21,11 @@ public interface LocatedRectangle {
 				above(other, margin) || below(other, margin);
 	}
 	
-	public default boolean leftOf(LocatedRectangle other, int margin){
+	default boolean leftOf(LocatedRectangle other, int margin){
 		return this.address().x + this.width() + margin < other.address().x;
 	}
 	
-	public default boolean rightOf(LocatedRectangle other, int margin){
+	default boolean rightOf(LocatedRectangle other, int margin){
 		return this.address().x > other.address().x + other.width() + margin;
 	}
 	

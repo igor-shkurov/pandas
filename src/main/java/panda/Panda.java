@@ -3,11 +3,8 @@ package panda;
 import java.awt.Point;
 
 public class Panda implements LocatedRectangle {
-	public static final int HEIGHT_COEFFICIENT = 2;
-	public static final int WIDTH_MARGIN = 50;
-	
-	private Body body; // composite
-	private Head head; // composite
+	private Body body;
+	private Head head;
 	private int width, height, left, bottom;
 	private HatType hatType;
 	private AccessoryType accessoryType;
@@ -25,8 +22,8 @@ public class Panda implements LocatedRectangle {
 		this.height = height;
 		this.left = left;
 		this.bottom = bottom;
-		this.hatType = HatType.NO_HAT;
-		this.accessoryType = AccessoryType.NO_ACCESSORY;
+		hatType = HatType.NO_HAT;
+		accessoryType = AccessoryType.NO_ACCESSORY;
 		body = new Body(width, height);
 		head = new Head(width * 2 / 3, height * 2 / 3);
 	}
