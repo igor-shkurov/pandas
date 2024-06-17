@@ -15,11 +15,12 @@ ___
 ![Alt text](/ClassDiagram.png)
 ___
 ## 5. Testing 
-Since most of the program components perform graphical rendering, they are not testable. Nevertheless, the coverage remains high.
+The test coverage is presented below:
+<br />
 ![Alt text](/Coverage.png)
 ___
 ## 6. Launching the project
-To compile, test & create a .jar executable type in the following command:
+To compile, test & create a .jar executable - type in the following command:
 ```
 mvn clean install
 ```
