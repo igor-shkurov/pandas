@@ -61,7 +61,7 @@ public class Panda implements LocatedRectangle {
 
 	@Override
 	public int width() {
-		return body.width(); // 
+		return body.width();
 	}
 
 	@Override

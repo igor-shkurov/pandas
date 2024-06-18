@@ -16,13 +16,13 @@ public class DrawingTool extends JFrame implements ActionListener, ItemListener 
 	private static final int LABEL_H_MARGIN = 20;
 	private static final int LABEL_V_MARGIN = 5;
 
-	private JButton bambooOn, bambooOff;
-	private JLabel bambooLabel, bambooNumberLabel;
+	private JButton changeStateButton, noStateButton;
+	private JLabel stateLabel, stateObjectsNumber;
 	private DrawingArea area;
 	private ArrayList<JRadioButton> radioButtons;
 	private JCheckBox cbStraw;
 
-	private int bambooNumber = 0;
+	private int bambooNumber = 200;
 
 	public DrawingTool(String title) {
 		super(title);
@@ -62,13 +62,12 @@ public class DrawingTool extends JFrame implements ActionListener, ItemListener 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == bambooOn) {
+		if (e.getSource() == changeStateButton) {
 			cleanup();
-			area.getScene().setBambooNumber(bambooNumber);
-			area.getScene().createBambooForest();
-		} else if (e.getSource() == bambooOff) {
+			area.getScene().changeState();
+		} else if (e.getSource() == noStateButton) {
 			cleanup();
-			area.getScene().deleteBambooForest();
+			area.getScene().removeState();
 		} else if (e.getSource() == radioButtons.get(1)) {
 			cleanup();
 			area.getScene().addAccessory(Panda.AccessoryType.CHINESE_FLAG);
@@ -127,33 +126,33 @@ public class DrawingTool extends JFrame implements ActionListener, ItemListener 
 	public JPanel bambooPanel() {
 		JPanel bambooPanel = new JPanel();
 
-		bambooLabel = new JLabel("Bamboo forest:");
-		bambooLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		bambooLabel.setBorder(new EmptyBorder(LABEL_V_MARGIN, LABEL_H_MARGIN, LABEL_V_MARGIN, LABEL_H_MARGIN));
+		stateLabel = new JLabel("Bamboo forest:");
+		stateLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		stateLabel.setBorder(new EmptyBorder(LABEL_V_MARGIN, LABEL_H_MARGIN, LABEL_V_MARGIN, LABEL_H_MARGIN));
 
-		bambooOn = new JButton("Add bamboo");
-		bambooOn.addActionListener(this);
-		bambooOn.setAlignmentX(Component.CENTER_ALIGNMENT);
+		changeStateButton = new JButton("Add bamboo");
+		changeStateButton.addActionListener(this);
+		changeStateButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-		bambooOff = new JButton("Turn off");
-		bambooOff.addActionListener(this);
-		bambooOff.setAlignmentX(Component.CENTER_ALIGNMENT);
+		noStateButton = new JButton("Turn off");
+		noStateButton.addActionListener(this);
+		noStateButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-		bambooNumberLabel = new JLabel("Bamboo number: 0");
-		bambooNumberLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		stateObjectsNumber = new JLabel("Bamboo number: 0");
+		stateObjectsNumber.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-		JSlider slider = new JSlider(JSlider.VERTICAL, 1, 250, 1);
-
-		slider.addChangeListener(e -> {
-			bambooNumber = ((JSlider) e.getSource()).getValue();
-			bambooNumberLabel.setText("Bamboo number: " + bambooNumber);
-		});
+//		JSlider slider = new JSlider(JSlider.VERTICAL, 1, 250, 1);
+//
+//		slider.addChangeListener(e -> {
+//			bambooNumber = ((JSlider) e.getSource()).getValue();
+//			bambooNumberLabel.setText("Bamboo number: " + bambooNumber);
+//		});
 		bambooPanel.setLayout(new BoxLayout(bambooPanel, BoxLayout.Y_AXIS));
-		bambooPanel.add(bambooLabel);
-		bambooPanel.add(bambooOn);
-		bambooPanel.add(bambooOff);
-		bambooPanel.add(bambooNumberLabel);
-		bambooPanel.add(slider, BorderLayout.CENTER);
+		bambooPanel.add(stateLabel);
+		bambooPanel.add(changeStateButton);
+		bambooPanel.add(noStateButton);
+		bambooPanel.add(stateObjectsNumber);
+//		bambooPanel.add(slider, BorderLayout.CENTER);
 
 		return bambooPanel;
 	}
