@@ -2,7 +2,7 @@ package panda.graphicstate;
 
 import panda.Scene;
 
-public class EmptyState extends State {
+public class EmptyState extends LayoutState {
     private final Scene scene;
 
     public EmptyState(Scene scene) {
@@ -15,12 +15,12 @@ public class EmptyState extends State {
     }
 
     @Override
-    public State nextState() {
+    public LayoutState nextState() {
         return new BambooForestState(scene);
     }
 
     @Override
     public String toString() {
-        return "Nothing";
+        return "Empty";
     }
 }

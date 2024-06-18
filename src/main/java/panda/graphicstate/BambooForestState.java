@@ -2,7 +2,7 @@ package panda.graphicstate;
 
 import panda.Scene;
 
-public class BambooForestState extends State {
+public class BambooForestState extends LayoutState {
     private Scene scene;
 
     public BambooForestState(Scene scene) {
@@ -16,7 +16,7 @@ public class BambooForestState extends State {
     }
 
     @Override
-    public State nextState() {
+    public LayoutState nextState() {
         return new TreeForestState(scene);
     }
 

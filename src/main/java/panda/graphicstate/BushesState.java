@@ -2,7 +2,7 @@ package panda.graphicstate;
 
 import panda.Scene;
 
-public class BushesState extends State {
+public class BushesState extends LayoutState {
     private final Scene scene;
 
     BushesState(Scene scene) {
@@ -16,7 +16,7 @@ public class BushesState extends State {
     }
 
     @Override
-    public State nextState() {
+    public LayoutState nextState() {
         return new EmptyState(scene);
     }
 

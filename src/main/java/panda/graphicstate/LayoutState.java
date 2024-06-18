@@ -2,8 +2,8 @@ package panda.graphicstate;
 
 import panda.Scene;
 
-public abstract class State {
+public abstract class LayoutState {
     public abstract void apply();
 
-    public abstract State nextState();
+    public abstract LayoutState nextState();
 }

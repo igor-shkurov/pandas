@@ -1,8 +1,6 @@
 package panda;
 
-import panda.graphicstate.BambooForestState;
-import panda.graphicstate.EmptyState;
-import panda.graphicstate.State;
+import panda.graphicstate.*;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -12,15 +10,14 @@ public class Scene {
 	private static final int OBJECT_MIN_HEIGHT = 100;
 	private static final int PANDA_SIZE = 150;
 
-	private static final int BAMBOO_NUMBER = 200;
-	private static final int TREE_NUMBER = 50;
-
-	private State graphicState;
+	private LayoutState graphicState;
 
 	private final int pandaNumber;
 	private final ArrayList<Panda> pandas;
 	private final ArrayList<Object> objects;
 	private final Dimension screenSize;
+
+	private int objectNumber;
 	
 	public Scene(Dimension screenSize) {
         this.graphicState = new EmptyState(this);
@@ -38,11 +35,13 @@ public class Scene {
 	
 	public void createBambooForest() {
 		objects.clear();
-		for (int i = 0; i < BAMBOO_NUMBER; i++) {
+		objectNumber = 200;
+		for (int i = 0; i < objectNumber; i++) {
 			objects.add(new Bamboo(RandomNumber.between(OBJECT_MIN_HEIGHT, OBJECT_MAX_HEIGHT),
 					RandomNumber.between(50, screenSize.width - 100),
 					RandomNumber.between(300, screenSize.height)));
 		}
+		System.out.println("HELLO: " + objectNumber);
 	}
 
 	public void drawBambooForest() {
@@ -53,7 +52,8 @@ public class Scene {
 
 	public void createTreeForest() {
 		objects.clear();
-		for (int i = 0; i < TREE_NUMBER; i++) {
+		objectNumber = 30;
+		for (int i = 0; i < objectNumber; i++) {
 			objects.add(new Tree(RandomNumber.between(OBJECT_MIN_HEIGHT, OBJECT_MAX_HEIGHT),
 					RandomNumber.between(50, screenSize.width - 100),
 					RandomNumber.between(300, screenSize.height)));
@@ -68,7 +68,8 @@ public class Scene {
 
 	public void createBushForest() {
 		objects.clear();
-		for (int i = 0; i < 10; i++) {
+		objectNumber = 15;
+		for (int i = 0; i < objectNumber; i++) {
 			objects.add(new Bush(RandomNumber.between(OBJECT_MIN_HEIGHT + 200, OBJECT_MAX_HEIGHT + 200),
 					RandomNumber.between(50, screenSize.width - 100),
 					RandomNumber.between(300, screenSize.height)));
@@ -79,6 +80,34 @@ public class Scene {
 		for (Object object : objects) {
 			((Bush) object).draw();
 		}
+	}
+
+	public void changeObjectNumber(int newObjectNumber) {
+		if (newObjectNumber < objectNumber) {
+			for (int i = 0; i < objectNumber - newObjectNumber; i++) {
+				objects.removeLast();
+			}
+		}
+		else {
+			for (int i = 0; i < newObjectNumber - objectNumber; i++) {
+				if (getState() instanceof BambooForestState) {
+					objects.add(new Bamboo(RandomNumber.between(OBJECT_MIN_HEIGHT, OBJECT_MAX_HEIGHT),
+							RandomNumber.between(50, screenSize.width - 100),
+							RandomNumber.between(300, screenSize.height)));
+				}
+				else if (getState() instanceof TreeForestState) {
+					objects.add(new Tree(RandomNumber.between(OBJECT_MIN_HEIGHT, OBJECT_MAX_HEIGHT),
+							RandomNumber.between(50, screenSize.width - 100),
+							RandomNumber.between(300, screenSize.height)));
+				}
+				else if (getState() instanceof BushesState) {
+					objects.add(new Bush(RandomNumber.between(OBJECT_MIN_HEIGHT + 200, OBJECT_MAX_HEIGHT + 200),
+							RandomNumber.between(50, screenSize.width - 100),
+							RandomNumber.between(300, screenSize.height)));
+				}
+			}
+		}
+		objectNumber = newObjectNumber;
 	}
 		
 	public void createPandas() {
@@ -94,6 +123,15 @@ public class Scene {
 			pandas.add(current);
 		}
 	}
+
+	public void setObjectNumber(int objectNumber) {
+		this.objectNumber = objectNumber;
+	}
+
+	public int getObjectNumber() {
+		return objectNumber;
+	}
+
 	
 	public boolean pandaIntersects(Panda panda) {
 		return pandas.stream().anyMatch(panda::intersects);
@@ -115,7 +153,7 @@ public class Scene {
 		graphicState = new EmptyState(this);
 	}
 
-	public State getState() {
+	public LayoutState getState() {
 		return graphicState;
 	}
 

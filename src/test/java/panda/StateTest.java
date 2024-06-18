@@ -9,7 +9,7 @@ import panda.graphicstate.*;
 import java.awt.*;
 
 public class StateTest {
-    State state = new EmptyState(new Scene(new Dimension()));
+    LayoutState state = new EmptyState(new Scene(new Dimension()));
 
     @Test
     void checkStateRotation() {
