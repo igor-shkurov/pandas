@@ -17,14 +17,14 @@ public class Scene {
 
 	private final int pandaNumber;
 	private final ArrayList<Panda> pandas;
-	private final ArrayList<Bamboo> bamboos;
+	private final ArrayList<Object> bamboos;
 	private final Dimension screenSize;
 	
 	public Scene(Dimension screenSize) {
-        this.graphicState = new EmptyState();
+        this.graphicState = new EmptyState(this);
 		this.screenSize = screenSize;
 
-        bambooNumber = 200;
+        bambooNumber = 50;
 		pandaNumber = this.screenSize.width / PANDA_SIZE;
 		pandas = new ArrayList<>();
 		bamboos = new ArrayList<>();
@@ -44,6 +44,7 @@ public class Scene {
 	}
 	
 	public void createBambooForest() {
+		bamboos.clear();
 		for (int i = 0; i < bambooNumber; i++) {
 			bamboos.add(new Bamboo(RandomNumber.between(BAMBOO_MIN_HEIGHT, BAMBOO_MAX_HEIGHT),
 					RandomNumber.between(50, screenSize.width - 100),
@@ -52,21 +53,24 @@ public class Scene {
 	}
 
 	public void drawBambooForest() {
-		for (Bamboo bamboo : bamboos) {
-			bamboo.draw();
+		for (Object bamboo : bamboos) {
+			((Bamboo) bamboo).draw();
 		}
 	}
 
 	public void createTreeForest() {
+		bamboos.clear();
 		for (int i = 0; i < bambooNumber; i++) {
-			bamboos.add(new Bamboo(RandomNumber.between(BAMBOO_MIN_HEIGHT, BAMBOO_MAX_HEIGHT),
+			bamboos.add(new Tree(RandomNumber.between(BAMBOO_MIN_HEIGHT, BAMBOO_MAX_HEIGHT),
 					RandomNumber.between(50, screenSize.width - 100),
 					RandomNumber.between(300, screenSize.height)));
 		}
 	}
 
-	public void deleteBambooForest() {
-		bamboos.clear();
+	public void drawTreeForest() {
+		for (Object bamboo : bamboos) {
+			((Tree) bamboo).draw();
+		}
 	}
 		
 	public void createPandas() {
@@ -88,20 +92,21 @@ public class Scene {
 	}
 	
 	public void draw() {
-		graphicState.apply(this);
+		graphicState.apply();
 
 		for (Panda panda : pandas) {
 			panda.draw();
 		}
 	}
 
-	public void changeState() {
+	public State changeState() {
 		graphicState = graphicState.nextState();
 		System.out.println("changed to " + graphicState);
+		return graphicState;
 	}
 
 	public void removeState() {
-		graphicState = new EmptyState();
+		graphicState = new EmptyState(this);
 		System.out.println("empty now");
 	}
 

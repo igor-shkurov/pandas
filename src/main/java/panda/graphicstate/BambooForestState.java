@@ -3,19 +3,25 @@ package panda.graphicstate;
 import panda.Scene;
 
 public class BambooForestState extends State {
-    @Override
-    public void apply(Scene scene) {
+    private Scene scene;
+
+    public BambooForestState(Scene scene) {
+        this.scene = scene;
         scene.createBambooForest();
+    }
+
+    @Override
+    public void apply() {
         scene.drawBambooForest();
     }
 
     @Override
     public State nextState() {
-        return new TreeForestState();
+        return new TreeForestState(scene);
     }
 
     @Override
     public String toString() {
-        return "Bamboo Forest State";
+        return "Bamboos";
     }
 }
