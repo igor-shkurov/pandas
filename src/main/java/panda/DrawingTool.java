@@ -15,33 +15,28 @@ import javax.swing.border.EmptyBorder;
 public class DrawingTool extends JFrame implements ActionListener, ItemListener {
 	private static final int LABEL_H_MARGIN = 20;
 	private static final int LABEL_V_MARGIN = 5;
-	private static String alignmentProperty = "<head>\n" +
-											"    <style>\n" +
-											"        body {\n" +
-											"            text-align: center;\n" +
-											"        }\n" +
-											"    </style>\n" +
-											"</head>";
+	private static final String alignmentProperty = "<head><style>body{text-align: center;}</style></head>";
 
-	private JButton changeStateButton, noStateButton;
 	private JLabel stateLabel, stateObjectsLabel;
-	private DrawingArea area;
-	private ArrayList<JRadioButton> radioButtons;
-	private JCheckBox cbStraw;
+	private final DrawingArea area;
+	private final ArrayList<JRadioButton> radioButtons;
+	private final ArrayList<JButton> buttons;
 
-	private int stateObjectsNumber = 200;
+    private int stateObjectsNumber = 200;
 
 	public DrawingTool(String title) {
 		super(title);
 		Dimension screenSize = getToolkit().getScreenSize();
 		setBounds(0, 0, screenSize.width, screenSize.height);
 
+		buttons = new ArrayList<>();
+		radioButtons = new ArrayList<>();
+
 		JPanel sidePanel = new JPanel();
 
 		JPanel verticalPanel = new JPanel();
 		verticalPanel.setLayout(new GridLayout(4, 1));
-		verticalPanel.add(bambooPanel());
-		radioButtons = new ArrayList<>();
+		verticalPanel.add(statePanel());
 		verticalPanel.add(customizationPanel());
 
 		sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
@@ -59,8 +54,12 @@ public class DrawingTool extends JFrame implements ActionListener, ItemListener 
 		return area;
 	}
 
-	public ArrayList<JRadioButton> getRadioButtons() {
+	public ArrayList<JRadioButton> getRadioButtons() { // used for testing
 		return radioButtons;
+	}
+
+	public ArrayList<JButton> getButtons() { // used for testing
+		return buttons;
 	}
 
 	public static void main(String[] args) {
@@ -69,10 +68,11 @@ public class DrawingTool extends JFrame implements ActionListener, ItemListener 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == changeStateButton) {
+		if (e.getSource() == buttons.get(0)) {
 			cleanup();
-			stateLabel.setText("<html>" + alignmentProperty + "<body>Current state:<br>" + area.getScene().changeState().toString() + "</body></html>");
-		} else if (e.getSource() == noStateButton) {
+			area.getScene().changeState();
+			stateLabel.setText("<html>" + alignmentProperty + "<body>Current state:<br>" + area.getScene().getState().toString() + "</body></html>");
+		} else if (e.getSource() == buttons.get(1)) {
 			cleanup();
 			area.getScene().removeState();
 			stateLabel.setText("<html>" + alignmentProperty + "<body>Current state:<br>Nothing</body></html>");
@@ -119,7 +119,7 @@ public class DrawingTool extends JFrame implements ActionListener, ItemListener 
 		radioButtons.get(2).addActionListener(this);
 		radioButtons.add(new JRadioButton("Handgun"));
 		radioButtons.get(3).addActionListener(this);
-		cbStraw = new JCheckBox("Stray Hat");
+        JCheckBox cbStraw = new JCheckBox("Stray Hat");
 		cbStraw.addItemListener(this);
 
 		ButtonGroup buttonGroup = new ButtonGroup();
@@ -131,20 +131,20 @@ public class DrawingTool extends JFrame implements ActionListener, ItemListener 
 		return customPanel;
 	}
 
-	public JPanel bambooPanel() {
-		JPanel bambooPanel = new JPanel();
+	public JPanel statePanel() {
+		JPanel statePanel = new JPanel();
 
 		stateLabel = new JLabel("<html>" + alignmentProperty + "<body>Current state:<br>Nothing</body></html>");
 		stateLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		stateLabel.setBorder(new EmptyBorder(LABEL_V_MARGIN, LABEL_H_MARGIN, LABEL_V_MARGIN, LABEL_H_MARGIN));
 
-		changeStateButton = new JButton("Change state");
-		changeStateButton.addActionListener(this);
-		changeStateButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		buttons.add(new JButton("Change state"));
+		buttons.get(0).addActionListener(this);
+		buttons.get(0).setAlignmentX(Component.CENTER_ALIGNMENT);
 
-		noStateButton = new JButton("Disable");
-		noStateButton.addActionListener(this);
-		noStateButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		buttons.add(new JButton("Disable state"));
+		buttons.get(1).addActionListener(this);
+		buttons.get(1).setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		stateObjectsLabel = new JLabel("Bamboo number: 0");
 		stateObjectsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -155,14 +155,14 @@ public class DrawingTool extends JFrame implements ActionListener, ItemListener 
 			stateObjectsNumber = ((JSlider) e.getSource()).getValue();
 			stateObjectsLabel.setText("Object number: " + stateObjectsNumber);
 		});
-		bambooPanel.setLayout(new BoxLayout(bambooPanel, BoxLayout.Y_AXIS));
-		bambooPanel.add(stateLabel);
-		bambooPanel.add(changeStateButton);
-		bambooPanel.add(noStateButton);
-		bambooPanel.add(stateObjectsLabel);
-//		bambooPanel.add(slider, BorderLayout.CENTER);
+		statePanel.setLayout(new BoxLayout(statePanel, BoxLayout.Y_AXIS));
+		statePanel.add(stateLabel);
+		statePanel.add(buttons.get(0));
+		statePanel.add(buttons.get(1));
+		statePanel.add(stateObjectsLabel);
+		statePanel.add(slider, BorderLayout.CENTER);
 
-		return bambooPanel;
+		return statePanel;
 	}
 
 }

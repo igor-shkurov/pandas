@@ -4,72 +4,80 @@ import panda.graphicstate.BambooForestState;
 import panda.graphicstate.EmptyState;
 import panda.graphicstate.State;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Scene {
-	private static final int BAMBOO_MAX_HEIGHT = 250;
-	private static final int BAMBOO_MIN_HEIGHT = 100;
+	private static final int OBJECT_MAX_HEIGHT = 250;
+	private static final int OBJECT_MIN_HEIGHT = 100;
 	private static final int PANDA_SIZE = 150;
 
-	private int bambooNumber;
+	private static final int BAMBOO_NUMBER = 200;
+	private static final int TREE_NUMBER = 50;
+
 	private State graphicState;
 
 	private final int pandaNumber;
 	private final ArrayList<Panda> pandas;
-	private final ArrayList<Object> bamboos;
+	private final ArrayList<Object> objects;
 	private final Dimension screenSize;
 	
 	public Scene(Dimension screenSize) {
         this.graphicState = new EmptyState(this);
 		this.screenSize = screenSize;
 
-        bambooNumber = 50;
 		pandaNumber = this.screenSize.width / PANDA_SIZE;
 		pandas = new ArrayList<>();
-		bamboos = new ArrayList<>();
+		objects = new ArrayList<>();
 		createPandas();
 	}
 
 	public ArrayList<Panda> getPandas() { // used for testing
 		return pandas;
 	}
-
-	public void setBambooNumber(int bambooNumber) {
-		this.bambooNumber = bambooNumber;
-	}
-
-	public int getBambooNumber() {
-		return bambooNumber;
-	}
 	
 	public void createBambooForest() {
-		bamboos.clear();
-		for (int i = 0; i < bambooNumber; i++) {
-			bamboos.add(new Bamboo(RandomNumber.between(BAMBOO_MIN_HEIGHT, BAMBOO_MAX_HEIGHT),
+		objects.clear();
+		for (int i = 0; i < BAMBOO_NUMBER; i++) {
+			objects.add(new Bamboo(RandomNumber.between(OBJECT_MIN_HEIGHT, OBJECT_MAX_HEIGHT),
 					RandomNumber.between(50, screenSize.width - 100),
 					RandomNumber.between(300, screenSize.height)));
 		}
 	}
 
 	public void drawBambooForest() {
-		for (Object bamboo : bamboos) {
-			((Bamboo) bamboo).draw();
+		for (Object object : objects) {
+			((Bamboo) object).draw();
 		}
 	}
 
 	public void createTreeForest() {
-		bamboos.clear();
-		for (int i = 0; i < bambooNumber; i++) {
-			bamboos.add(new Tree(RandomNumber.between(BAMBOO_MIN_HEIGHT, BAMBOO_MAX_HEIGHT),
+		objects.clear();
+		for (int i = 0; i < TREE_NUMBER; i++) {
+			objects.add(new Tree(RandomNumber.between(OBJECT_MIN_HEIGHT, OBJECT_MAX_HEIGHT),
 					RandomNumber.between(50, screenSize.width - 100),
 					RandomNumber.between(300, screenSize.height)));
 		}
 	}
 
 	public void drawTreeForest() {
-		for (Object bamboo : bamboos) {
-			((Tree) bamboo).draw();
+		for (Object object : objects) {
+			((Tree) object).draw();
+		}
+	}
+
+	public void createBushForest() {
+		objects.clear();
+		for (int i = 0; i < 10; i++) {
+			objects.add(new Bush(RandomNumber.between(OBJECT_MIN_HEIGHT + 200, OBJECT_MAX_HEIGHT + 200),
+					RandomNumber.between(50, screenSize.width - 100),
+					RandomNumber.between(300, screenSize.height)));
+		}
+	}
+
+	public void drawBushForest() {
+		for (Object object : objects) {
+			((Bush) object).draw();
 		}
 	}
 		
@@ -99,15 +107,16 @@ public class Scene {
 		}
 	}
 
-	public State changeState() {
+	public void changeState() {
 		graphicState = graphicState.nextState();
-		System.out.println("changed to " + graphicState);
-		return graphicState;
 	}
 
 	public void removeState() {
 		graphicState = new EmptyState(this);
-		System.out.println("empty now");
+	}
+
+	public State getState() {
+		return graphicState;
 	}
 
 	public void addAccessory(Panda.AccessoryType accessoryType) {

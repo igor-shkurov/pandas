@@ -1,16 +1,21 @@
 package panda;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
+import panda.graphicstate.BambooForestState;
+import panda.graphicstate.BushesState;
+import panda.graphicstate.EmptyState;
+import panda.graphicstate.TreeForestState;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class DrawingToolTest {
     DrawingTool drawingTool = new DrawingTool("Panda");
+    Scene scene = drawingTool.getDrawingArea().getScene();
 
     @Test
     void testIfStrawHatChangeApplies() {
@@ -69,5 +74,33 @@ class DrawingToolTest {
         drawingTool.actionPerformed(e);
         ArrayList<Panda> pandas = drawingTool.getDrawingArea().getScene().getPandas();
         assertTrue(pandas.stream().allMatch(panda -> { return panda.getAccessoryType() == requiredAccessory; }));
+    }
+
+    @Test
+    void testChangeStateButton() {
+        ActionEvent e = new ActionEvent(drawingTool.getButtons().get(0), 0, "");
+        // traversing through all the possible states by pressing "Change state" button
+        assertInstanceOf(EmptyState.class, scene.getState());
+        drawingTool.actionPerformed(e);
+        assertInstanceOf(BambooForestState.class, scene.getState());
+        drawingTool.actionPerformed(e);
+        assertInstanceOf(TreeForestState.class, scene.getState());
+        drawingTool.actionPerformed(e);
+        assertInstanceOf(BushesState.class, scene.getState());
+        drawingTool.actionPerformed(e);
+        assertInstanceOf(EmptyState.class, scene.getState());
+    }
+
+    @Test
+    void testDisableStateButton() {
+        ActionEvent e = new ActionEvent(drawingTool.getButtons().get(0), 0, "");
+        // making sure we got a state that is different form the initial by pressing "Change State" button
+        assertInstanceOf(EmptyState.class, scene.getState());
+        drawingTool.actionPerformed(e);
+        assertInstanceOf(BambooForestState.class, scene.getState());
+        // pressing the button "Disable state" and checking the state
+        e = new ActionEvent(drawingTool.getButtons().get(1), 0, "");
+        drawingTool.actionPerformed(e);
+        assertInstanceOf(EmptyState.class, scene.getState());
     }
 }

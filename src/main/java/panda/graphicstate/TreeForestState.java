@@ -17,7 +17,7 @@ public class TreeForestState extends State {
 
     @Override
     public State nextState() {
-        return new LakeState(scene);
+        return new BushesState(scene);
     }
 
     @Override
