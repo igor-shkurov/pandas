@@ -170,7 +170,6 @@ public class DrawingTool extends JFrame implements ActionListener, ItemListener 
 		objectSlider.setEnabled(false);
 		objectSlider.addChangeListener(e -> {
 			cleanup();
-			System.out.println("changed");
 			stateObjectsNumber = ((JSlider) e.getSource()).getValue();
 			stateObjectsLabel.setText("Object number: " + stateObjectsNumber);
 			area.getScene().changeObjectNumber(stateObjectsNumber);

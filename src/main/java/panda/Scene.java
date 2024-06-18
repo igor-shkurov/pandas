@@ -41,7 +41,6 @@ public class Scene {
 					RandomNumber.between(50, screenSize.width - 100),
 					RandomNumber.between(300, screenSize.height)));
 		}
-		System.out.println("HELLO: " + objectNumber);
 	}
 
 	public void drawBambooForest() {
