@@ -2,7 +2,7 @@ package panda;
 
 import java.awt.*;
 
-public class Tree {
+public class Tree implements DrawableObject {
     private final int height, left, bottom;
 
     public Tree(int height, int left, int bottom) {
@@ -21,8 +21,7 @@ public class Tree {
         g.setStroke(new BasicStroke(10));
 
         // Draw the trunk
-        Drawing.pen().drawLine(x, y, x, y - height);
-
+        Drawing.pen().drawLine(x, y, x, y - height); 
         g.setStroke(oldStroke);
 
         // Draw the leafy top

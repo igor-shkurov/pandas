@@ -23,7 +23,7 @@ public class DrawingArea extends JPanel {
  
 	protected void paintComponent(Graphics pen) {
 		super.paintComponent(pen);
-		super.setBackground(new Color(194, 218, 184));
+		super.setBackground(new Color(255, 192, 203));
 		Drawing.set(pen);
 		scene.draw();
 	}

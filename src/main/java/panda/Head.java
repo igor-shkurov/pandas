@@ -4,7 +4,7 @@ import java.awt.Color;
 
 public class Head extends BodyPart {
 	private Ear ears[]; // aggregate
-	private BlackEyePatch patches[]; // aggregate
+	private BlackEyePatch patches[]; // composite
 	private Eye eyes[]; // composite
 	private Mouth mouth; // aggregate
 	private Nose nose; // aggregate
@@ -59,7 +59,7 @@ public class Head extends BodyPart {
 		}
 
 		if (hat != null) {
-			hat.drawAt(left, bottom - height * 6 / 5);
+			hat.drawAt(left, bottom - height * 6 / 5);  
 		}
 	}
 }

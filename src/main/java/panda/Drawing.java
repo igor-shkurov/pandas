@@ -4,7 +4,9 @@ import java.awt.Graphics;
 
 public class Drawing {
  
-	public class pen {}
+	public class pen {
+		
+	}
 
 	private static Graphics pen = null;
 	

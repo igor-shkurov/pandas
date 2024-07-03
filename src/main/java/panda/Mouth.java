@@ -1,9 +1,13 @@
 package panda;
 
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.Graphics;
 
 public class Mouth extends BodyPart {
 	public Mouth(int width, int height) {

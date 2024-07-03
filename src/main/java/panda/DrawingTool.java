@@ -69,43 +69,43 @@ public class DrawingTool extends JFrame implements ActionListener, ItemListener 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		Scene scene = area.getScene();
+
 		if (e.getSource() == buttons.get(0)) {
-			cleanup();
-			area.getScene().changeState();
-			Scene scene = area.getScene();
-			stateLabel.setText("<html>" + alignmentProperty + "<body>Current state:<br>" + scene.getState().toString() + "</body></html>");
-			if (scene.getState() instanceof EmptyState) {
-				objectSlider.setEnabled(false);
-				objectSlider.setValue(0);
-				stateObjectsLabel.setText("-");
-			}
-			else {
-				objectSlider.setEnabled(true);
-				stateObjectsLabel.setText("Object number: " + scene.getObjectNumber());
-				int currentObjectVal = scene.getObjectNumber();
-				objectSlider.setMaximum(currentObjectVal);
-				objectSlider.setValue(currentObjectVal);
-			}
+			scene.createBambooForest();
+			scene.changeToBamboos();
 		} else if (e.getSource() == buttons.get(1)) {
-			cleanup();
+			scene.createTreeForest();
+			scene.changeToTrees();
+		} else if (e.getSource() == buttons.get(2)) {
+			scene.createBushForest();
+			scene.changeToBushes();
+		} else if (e.getSource() == buttons.get(3)) {
 			objectSlider.setEnabled(false);
 			objectSlider.setValue(0);
 			stateObjectsLabel.setText("-");
 			area.getScene().removeState();
-			stateLabel.setText("<html>" + alignmentProperty + "<body>Current state:<br>Empty</body></html>");
+			stateLabel.setText("<html>" + alignmentProperty + "<body>Panda Location:<br>At home</body></html>");
 		} else if (e.getSource() == radioButtons.get(1)) {
-			cleanup();
-			area.getScene().addAccessory(Panda.AccessoryType.CHINESE_FLAG);
+			scene.addAccessory(Panda.AccessoryType.CHINESE_FLAG);
 		} else if (e.getSource() == radioButtons.get(2)) {
-			cleanup();
-			area.getScene().addAccessory(Panda.AccessoryType.GERMAN_FLAG);
+			scene.addAccessory(Panda.AccessoryType.GERMAN_FLAG);
 		} else if (e.getSource() == radioButtons.get(3)) {
-			cleanup();
-			area.getScene().addAccessory(Panda.AccessoryType.HANDGUN);
+			scene.addAccessory(Panda.AccessoryType.HANDGUN);
 		} else if (e.getSource() == radioButtons.get(0)) {
-			cleanup();
-			area.getScene().addAccessory(Panda.AccessoryType.NO_ACCESSORY);
+			scene.addAccessory(Panda.AccessoryType.NO_ACCESSORY);
 		}
+
+		if (e.getSource() instanceof JButton && e.getSource() != buttons.get(3)) {
+			stateLabel.setText("<html>" + alignmentProperty + "<body>Panda Location:<br>" + scene.getState().toString() + "</body></html>");
+			objectSlider.setEnabled(true);
+			stateObjectsLabel.setText("Object number: " + scene.getObjectNumber());
+			int currentObjectVal = scene.getObjectNumber();
+			objectSlider.setMaximum(currentObjectVal);
+			objectSlider.setValue(currentObjectVal);
+		}
+
+		cleanup();
 	}
 
 	public void itemStateChanged(ItemEvent e) {
@@ -151,17 +151,25 @@ public class DrawingTool extends JFrame implements ActionListener, ItemListener 
 	public JPanel statePanel() {
 		JPanel statePanel = new JPanel();
 
-		stateLabel = new JLabel("<html>" + alignmentProperty + "<body>Current state:<br>Nothing</body></html>");
+		stateLabel = new JLabel("<html>" + alignmentProperty + "<body>Panda Location:<br>At home</body></html>");
 		stateLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		stateLabel.setBorder(new EmptyBorder(LABEL_V_MARGIN, LABEL_H_MARGIN, LABEL_V_MARGIN, LABEL_H_MARGIN));
 
-		buttons.add(new JButton("Change state"));
+		buttons.add(new JButton("Bamboos"));
 		buttons.get(0).addActionListener(this);
 		buttons.get(0).setAlignmentX(Component.CENTER_ALIGNMENT);
-
-		buttons.add(new JButton("Disable state"));
+		
+		buttons.add(new JButton("Trees"));
 		buttons.get(1).addActionListener(this);
 		buttons.get(1).setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		buttons.add(new JButton("Bushes"));
+		buttons.get(2).addActionListener(this);
+		buttons.get(2).setAlignmentX(Component.CENTER_ALIGNMENT);
+
+		buttons.add(new JButton("Disable state"));
+		buttons.get(3).addActionListener(this);
+		buttons.get(3).setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		stateObjectsLabel = new JLabel("Object number: 0");
 		stateObjectsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -180,6 +188,8 @@ public class DrawingTool extends JFrame implements ActionListener, ItemListener 
 		statePanel.add(stateLabel);
 		statePanel.add(buttons.get(0));
 		statePanel.add(buttons.get(1));
+		statePanel.add(buttons.get(2));
+		statePanel.add(buttons.get(3));
 		statePanel.add(stateObjectsLabel);
 		statePanel.add(objectSlider, BorderLayout.CENTER);
 

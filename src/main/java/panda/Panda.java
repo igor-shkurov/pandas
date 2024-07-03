@@ -1,7 +1,7 @@
 package panda;
 
 import java.awt.Point;
-
+//Field Declarations
 public class Panda implements LocatedRectangle {
 	private Body body;
 	private Head head;

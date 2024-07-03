@@ -3,25 +3,46 @@ package panda.graphicstate;
 import panda.Scene;
 
 public class BambooForestState extends LayoutState {
-    private Scene scene;
+	private static BambooForestState instance;
+	
+	private BambooForestState(Scene context) {
+		this.context = context;
+		bamboos = this;
+	}
+	
+	public static LayoutState getInstance(Scene context) {
+		if (instance == null) {
+			instance = new BambooForestState(context);
+		}
+		return instance;
+	}
 
-    public BambooForestState(Scene scene) {
-        this.scene = scene;
-        scene.createBambooForest();
-    }
+	@Override
+	public LayoutState drawBamboos() {
+		context.createBambooForest();
+		return this;
+	}
 
-    @Override
-    public void apply() {
-        scene.drawBambooForest();
-    }
+	@Override
+	public LayoutState drawTrees() {
+		context.createTreeForest();
+		return TreeForestState.getInstance(context);
+	}
 
-    @Override
-    public LayoutState nextState() {
-        return new TreeForestState(scene);
-    }
+	@Override
+	public LayoutState drawBushes() {
+		context.createBushForest();
+		return BushesState.getInstance(context);
+	}
 
-    @Override
-    public String toString() {
-        return "Bamboos";
-    }
+	@Override
+	public LayoutState erase() {
+		context.setObjectNumber(0);
+		return EmptyState.getInstance(context);
+	}
+	
+	@Override
+	public String toString() {
+		return "Bamboos";
+	}
 }

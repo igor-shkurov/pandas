@@ -3,24 +3,41 @@ package panda.graphicstate;
 import panda.Scene;
 
 public class EmptyState extends LayoutState {
-    private final Scene scene;
+	private static EmptyState instance;
+	
+	private EmptyState(Scene context) {
+		this.context = context;
+		nothing = this;
+	}
+	
+	public static LayoutState getInstance(Scene context) {
+		if (instance == null) {
+			instance = new EmptyState(context);
+		}
+		return instance;
+	}
 
-    public EmptyState(Scene scene) {
-        this.scene = scene;
-    }
+	@Override
+	public LayoutState drawBamboos() {
+		context.createBambooForest();
+		return BambooForestState.getInstance(context);
+	}
 
-    @Override
-    public void apply() {
-        // do nothing
-    }
+	@Override
+	public LayoutState drawTrees() {
+		context.createTreeForest();
+		return TreeForestState.getInstance(context);
+	}
 
-    @Override
-    public LayoutState nextState() {
-        return new BambooForestState(scene);
-    }
+	@Override
+	public LayoutState drawBushes() {
+		context.createBushForest();
+		return BushesState.getInstance(context);
+	}
 
-    @Override
-    public String toString() {
-        return "Empty";
-    }
+	@Override
+	public LayoutState erase() {
+		context.setObjectNumber(0);
+		return this;
+	}
 }

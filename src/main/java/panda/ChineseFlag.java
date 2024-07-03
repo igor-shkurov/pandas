@@ -12,7 +12,7 @@ public class ChineseFlag extends Flag {
         Drawing.pen().fillRect(left, bottom, width, height);
 
         Drawing.pen().setColor(Color.BLACK);
-        Drawing.pen().drawLine(left, bottom, left, bottom + 2 * width);
+        Drawing.pen().drawLine(left, bottom, left, bottom + 2 * width); // what line is being drawn here
 
         drawStar((Graphics2D) Drawing.pen(), left + width / 8, bottom + height / 4, width / 10, 0);
 
