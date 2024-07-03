@@ -77,29 +77,30 @@ class DrawingToolTest {
     }
 
     @Test
-    void testChangeStateButton() {
-        ActionEvent e = new ActionEvent(drawingTool.getButtons().get(0), 0, "");
-        // traversing through all the possible states by pressing "Change state" button
+    void testChangeToBamboos() {
         assertInstanceOf(EmptyState.class, scene.getState());
+        ActionEvent e = new ActionEvent(drawingTool.getButtons().get(0), 0, "");
         drawingTool.actionPerformed(e);
         assertInstanceOf(BambooForestState.class, scene.getState());
+    }
+
+    @Test
+    void testChangeToTrees() {
+        ActionEvent e = new ActionEvent(drawingTool.getButtons().get(1), 0, "");
         drawingTool.actionPerformed(e);
         assertInstanceOf(TreeForestState.class, scene.getState());
+    }
+
+    @Test
+    void testChangeToBushes() {
+        ActionEvent e = new ActionEvent(drawingTool.getButtons().get(2), 0, "");
         drawingTool.actionPerformed(e);
         assertInstanceOf(BushesState.class, scene.getState());
-        drawingTool.actionPerformed(e);
-        assertInstanceOf(EmptyState.class, scene.getState());
     }
 
     @Test
     void testDisableStateButton() {
-        ActionEvent e = new ActionEvent(drawingTool.getButtons().get(0), 0, "");
-        // making sure we got a state that is different form the initial by pressing "Change State" button
-        assertInstanceOf(EmptyState.class, scene.getState());
-        drawingTool.actionPerformed(e);
-        assertInstanceOf(BambooForestState.class, scene.getState());
-        // pressing the button "Disable state" and checking the state
-        e = new ActionEvent(drawingTool.getButtons().get(1), 0, "");
+        ActionEvent e = new ActionEvent(drawingTool.getButtons().get(3), 0, "");
         drawingTool.actionPerformed(e);
         assertInstanceOf(EmptyState.class, scene.getState());
     }

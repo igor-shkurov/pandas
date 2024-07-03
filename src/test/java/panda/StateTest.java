@@ -9,18 +9,18 @@ import panda.graphicstate.*;
 import java.awt.*;
 
 public class StateTest {
-    LayoutState state = new EmptyState(new Scene(new Dimension()));
+    LayoutState state = EmptyState.getInstance(new Scene(new Dimension()));
 
     @Test
     void checkStateRotation() {
         assertInstanceOf(EmptyState.class, state);
-        state = state.nextState();
+        state = state.drawBamboos();
         assertInstanceOf(BambooForestState.class, state);
-        state = state.nextState();
+        state = state.drawTrees();
         assertInstanceOf(TreeForestState.class, state);
-        state = state.nextState();
+        state = state.drawBushes();
         assertInstanceOf(BushesState.class, state);
-        state = state.nextState();
+        state = state.erase();
         assertInstanceOf(EmptyState.class, state);
     }
 }
